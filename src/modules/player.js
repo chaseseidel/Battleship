@@ -20,6 +20,24 @@ export default class Player {
     }
   }
 
+  incomingAttack(position) {
+    this.board.receiveAttack(position);
+  }
+
+  attackPlayer(player, position) {
+    player.board.receiveAttack(position);
+  }
+
+  randomAttack(player) {
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    try {
+      player.board.receiveAttack([x, y]);
+    } catch (e) {
+      this.randomAttack(player);
+    }
+  }
+
   randomShip(length) {
     let x = Math.floor(Math.random() * 10);
     let y = Math.floor(Math.random() * 10);
