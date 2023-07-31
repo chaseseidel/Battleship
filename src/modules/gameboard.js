@@ -1,6 +1,7 @@
 export default class Gameboard {
   constructor() {
     this.board = [];
+    this.ships = [];
   }
 
   createBoard() {
@@ -25,6 +26,7 @@ export default class Gameboard {
         }
         this.board[position[0] + i][position[1]] = ship;
       }
+      this.ships.push(ship);
     } else {
       if (position[1] + ship.length > 9) {
         throw new Error("Ship cannot be placed there");
@@ -37,6 +39,7 @@ export default class Gameboard {
 
         this.board[position[0]][position[1] + i] = ship;
       }
+      this.ships.push(ship);
     }
   }
 
