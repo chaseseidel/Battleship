@@ -2,6 +2,7 @@ export default class Gameboard {
   constructor() {
     this.board = [];
     this.ships = [];
+    this.hits = new Set();
   }
 
   createBoard() {
@@ -45,15 +46,19 @@ export default class Gameboard {
 
   receiveAttack(position) {
     if (
-      (position[0] > 9 || position[0] < 0) ||
-      (position[1] > 9 || position[1] < 0)
+      position[0] > 9 ||
+      position[0] < 0 ||
+      position[1] > 9 ||
+      position[1] < 0
     ) {
       throw new Error("Shot is out of bounds");
     }
     if (this.board[position[0]][position[1]] === 0) {
       this.board[position[0]][position[1]] = 1;
+      this.hits.add(`[${position[0]},${position[1]}]`);
     } else if (this.board[position[0]][position[1]] !== 1) {
       this.board[position[0]][position[1]].hit(position);
+      this.hits.add(`[${position[0]},${position[1]}]`);
     } else {
       throw new Error("This spot was already shot at!");
     }
@@ -71,20 +76,24 @@ export default class Gameboard {
     return check;
   }
 
-  // printBoard() {
-  //   let totalBoard = "";
-  //   for (let i = 0; i < 10; i++) {
-  //     let board = "";
-  //     for (let j = 0; j < 10; j++) {
-  //       if (typeof this.board[i][j] === "object") {
-  //         board += "X ";
-  //       } else {
-  //         board += `${this.board[i][j]} `;
-  //       }
-  //     }
-  //     totalBoard += board + "\n";
-  //   }
+  mostRecentHit() {
+    return [...this.hits][this.hits.size - 1];
+  }
 
-  //   console.log(totalBoard);
-  // }
+  printBoard() {
+    let totalBoard = "";
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        let board = "";
+        if (typeof this.board[j][i] === "object") {
+          board += "X ";
+        } else {
+          board += `${this.board[j][i]} `;
+        }
+        totalBoard += board;
+      }
+      totalBoard += "\n";
+    }
+    console.log(totalBoard);
+  }
 }
