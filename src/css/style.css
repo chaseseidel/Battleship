@@ -1,3 +1,73 @@
-.hi {
-  color: red;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+:root {
+  --blue-color: #0b4f6c;
+  --white-color: #fbfbff;
+  --gray-color: #b1b1b1;
+  --black-color: black;
+}
+
+html {
+  font-family:
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  min-height: 100vh;
+  background-color: #0b4f6c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#title {
+  font-size: 3rem;
+}
+
+#game-container {
+  display: flex;
+  gap: 50px;
+  height: 300px;
+  width: 700px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  flex: 1;
+  border: 1px solid var(--black-color);
+  background-color: var(--white-color);
+}
+
+.tile {
+  border: 1px solid var(--black-color);
+}
+
+.tile:hover {
+  background-color: var(--gray-color);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: #e7e7e7;
 }
