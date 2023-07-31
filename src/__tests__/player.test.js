@@ -1,5 +1,6 @@
 import Player from "../modules/player";
 import Gameboard from "../modules/gameboard";
+import Ship from "../modules/ship";
 
 let player;
 let computer;
@@ -39,5 +40,40 @@ describe("Player has random ships", () => {
     player.randomFleet();
 
     expect(player.board.ships.length).toBe(5);
+  });
+});
+
+describe("Player attacking", () => {
+  beforeEach(() => {
+    computer = new Player("AI");
+    computer.board.createBoard();
+    computer.board.placeShip(new Ship(3), [2, 1], "x");
+    player.board.createBoard();
+    player.board.placeShip(new Ship(4), [4, 2], "y");
+  });
+
+  test("Player gets attacked", () => {
+    player.incomingAttack([4, 3]);
+    expect(player.board.ships[0].hits.length).toBe(1);
+  });
+
+  test("Player gets attacked illegally", () => {
+    expect(() => player.incomingAttack([10, 3])).toThrow();
+  });
+
+  test("Player attacks other player", () => {
+    player.attackPlayer(computer, [2, 1]);
+    expect(computer.board.ships[0].hits.length).toBe(1);
+  });
+
+  test("Player attacks and misses other player", () => {
+    player.attackPlayer(computer, [9, 9]);
+    expect(computer.board.ships[0].hits.length).toBe(0);
+    expect(computer.board.board[9][9]).toBe(1);
+  });
+
+  test("Player attacks marked target", () => {
+    player.attackPlayer(computer, [9, 9]);
+    expect(() => player.attackPlayer(computer, [9, 9])).toThrow();
   });
 });
