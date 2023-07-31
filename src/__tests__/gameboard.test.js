@@ -65,6 +65,13 @@ describe("Ship placement", () => {
 
     expect(() => gameboard.placeShip(submarine, [3, 3], "y")).toThrow();
   });
+
+  test("Keep track of ships", () => {
+    gameboard.placeShip(battleship, [1, 5], "x");
+    gameboard.placeShip(battleship, [5, 3], "y");
+
+    expect(gameboard.ships.length).toBe(2);
+  });
 });
 
 describe("Attacking ships", () => {
