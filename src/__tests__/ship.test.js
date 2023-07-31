@@ -42,9 +42,6 @@ test("Ships being sunk", () => {
 
 test("Ships being hit in the same spot", () => {
   battleship.hit([0, 0]);
-  battleship.hit([0, 0]);
-  submarine.hit([1, 1]);
-  submarine.hit([1, 1]);
+  expect(() => battleship.hit([0, 0])).toThrow();
   expect(battleship.hits.length).toBe(1);
-  expect(submarine.hits.length).toBe(1);
 });
