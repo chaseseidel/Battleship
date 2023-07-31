@@ -1,16 +1,16 @@
 export default class Ship {
   constructor(length) {
     this.length = length;
-    this.hits = new Set();
+    this.hits = [];
     this.sunk = false;
   }
 
   hit(position) {
-    if (!this.hits.has(position)) {
-      this.hits.add(position);
+    if (!this.hits.includes(position)) {
+      this.hits.push(position);
     }
 
-    if (this.hits.size >= this.length) {
+    if (this.hits.length >= this.length) {
       this.sunk = true;
     }
   }
