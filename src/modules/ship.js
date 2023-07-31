@@ -6,8 +6,8 @@ export default class Ship {
   }
 
   hit(position) {
-    if (!this.hits.includes(position)) {
-      this.hits.push(position);
+    if (!this.hits.includes(`${position}`)) {
+      this.hits.push(`${position}`);
     }
 
     if (this.hits.length >= this.length) {
