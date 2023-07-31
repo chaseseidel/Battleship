@@ -121,6 +121,12 @@ describe("Attacking ships", () => {
     expect(() => gameboard.receiveAttack([9, 8])).toThrow();
   });
 
+  test("Most Recent Attack", () => {
+    gameboard.receiveAttack([9, 8]);
+
+    expect(gameboard.mostRecentHit()).toBe("[9,8]");
+  });
+
   test("All ships sunk", () => {
     for (let i = 0; i < battleship.length; i++) {
       gameboard.receiveAttack([1 + i, 3]);
