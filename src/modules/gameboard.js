@@ -39,4 +39,12 @@ export default class Gameboard {
       }
     }
   }
+
+  receiveAttack(position) {
+    if (this.board[position[0]][position[1]] === 0) {
+      this.board[position[0]][position[1]] = 1;
+    } else if (this.board[position[0]][position[1]] !== 1) {
+      this.board[position[0]][position[1]].hit(position);
+    }
+  }
 }
