@@ -12,7 +12,7 @@ beforeEach(() => {
 test("Create board", () => {
   gameboard.createBoard();
 
-  expect(gameboard.board[0][0]).toEqual(0);
+  expect(gameboard.board[0][0]).toBe(0);
 });
 
 describe("Ship placement", () => {
@@ -31,10 +31,10 @@ describe("Ship placement", () => {
       sunk: false,
     });
     expect(gameboard.board[4][3]).toEqual({
-        length: 4,
-        hits: [],
-        sunk: false,
-      });;
+      length: 4,
+      hits: [],
+      sunk: false,
+    });
   });
 
   test("Place ship at invalid horizontal position", () => {
@@ -45,15 +45,15 @@ describe("Ship placement", () => {
     gameboard.placeShip(battleship, [4, 2], "y");
 
     expect(gameboard.board[4][2]).toEqual({
-        length: 4,
-        hits: [],
-        sunk: false,
-      });
+      length: 4,
+      hits: [],
+      sunk: false,
+    });
     expect(gameboard.board[4][5]).toEqual({
-        length: 4,
-        hits: [],
-        sunk: false,
-      });
+      length: 4,
+      hits: [],
+      sunk: false,
+    });
   });
 
   test("Place ship at invalid vertical position", () => {
@@ -64,5 +64,45 @@ describe("Ship placement", () => {
     gameboard.placeShip(battleship, [1, 5], "x");
 
     expect(() => gameboard.placeShip(submarine, [3, 3], "y")).toThrow();
+  });
+});
+
+describe("Attacking ships", () => {
+  beforeEach(() => {
+    gameboard.createBoard();
+    battleship = new Ship(4);
+    submarine = new Ship(3);
+    gameboard.placeShip(battleship, [1, 3], "x");
+    gameboard.placeShip(submarine, [5, 1], "y");
+  });
+
+  test("Ship being attacked", () => {
+    gameboard.receiveAttack([2, 3]);
+
+    expect(battleship.hits.length).toBe(1);
+  });
+
+  test("Ship being attacked multiple times", () => {
+    gameboard.receiveAttack([1, 3]);
+    gameboard.receiveAttack([2, 3]);
+    gameboard.receiveAttack([3, 3]);
+    gameboard.receiveAttack([3, 3]);
+
+    expect(battleship.hits.length).toBe(3);
+  });
+
+  test("Ship being sunk", () => {
+    gameboard.receiveAttack([1, 3]);
+    gameboard.receiveAttack([2, 3]);
+    gameboard.receiveAttack([3, 3]);
+    gameboard.receiveAttack([4, 3]);
+
+    expect(battleship.isSunk()).toBeTruthy();
+  });
+
+  test("Missed shot", () => {
+    gameboard.receiveAttack([9, 8]);
+
+    expect(gameboard.board[9][8]).toBe(1);
   });
 });
