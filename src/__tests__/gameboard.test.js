@@ -112,4 +112,23 @@ describe("Attacking ships", () => {
 
     expect(gameboard.board[9][8]).toBe(1);
   });
+
+  test("All ships sunk", () => {
+    for (let i = 0; i < battleship.length; i++) {
+      gameboard.receiveAttack([1 + i, 3]);
+    }
+
+    for (let i = 0; i < submarine.length; i++) {
+      gameboard.receiveAttack([5, 1 + i]);
+    }
+
+    expect(gameboard.allShipsSunk()).toBeTruthy();
+  });
+
+  test("All ships not sunk", () => {
+    gameboard.receiveAttack([1, 3]);
+    gameboard.receiveAttack([5, 1]);
+
+    expect(gameboard.allShipsSunk()).toBeFalsy();
+  });
 });
