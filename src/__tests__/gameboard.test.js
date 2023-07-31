@@ -89,6 +89,10 @@ describe("Attacking ships", () => {
     expect(battleship.hits.length).toBe(1);
   });
 
+  test("Ship being shot illegaly", () => {
+    expect(() => gameboard.receiveAttack([10, 3])).toThrow();
+  });
+
   test("Ship being attacked multiple times", () => {
     gameboard.receiveAttack([3, 3]);
 
