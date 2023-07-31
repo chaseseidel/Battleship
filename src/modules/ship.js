@@ -8,6 +8,8 @@ export default class Ship {
   hit(position) {
     if (!this.hits.includes(`${position}`)) {
       this.hits.push(`${position}`);
+    } else {
+      throw new Error("Cannot attack that part of the ship");
     }
 
     if (this.hits.length >= this.length) {
