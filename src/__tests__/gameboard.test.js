@@ -90,12 +90,10 @@ describe("Attacking ships", () => {
   });
 
   test("Ship being attacked multiple times", () => {
-    gameboard.receiveAttack([1, 3]);
-    gameboard.receiveAttack([2, 3]);
-    gameboard.receiveAttack([3, 3]);
     gameboard.receiveAttack([3, 3]);
 
-    expect(battleship.hits.length).toBe(3);
+    expect(() => gameboard.receiveAttack([3, 3])).toThrow();
+    expect(battleship.hits.length).toBe(1);
   });
 
   test("Ship being sunk", () => {
@@ -111,6 +109,12 @@ describe("Attacking ships", () => {
     gameboard.receiveAttack([9, 8]);
 
     expect(gameboard.board[9][8]).toBe(1);
+  });
+
+  test("Attacked already hit zone", () => {
+    gameboard.receiveAttack([9, 8]);
+
+    expect(() => gameboard.receiveAttack([9, 8])).toThrow();
   });
 
   test("All ships sunk", () => {
