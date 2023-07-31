@@ -14,8 +14,8 @@ test("Ships taking multiple hits", () => {
   submarine.hit(1);
   submarine.hit(2);
 
-  expect(battleship.hits.size).toBe(2);
-  expect(submarine.hits.size).toBe(2);
+  expect(battleship.hits.length).toBe(2);
+  expect(submarine.hits.length).toBe(2);
 });
 
 test("Ships not being sunk", () => {
@@ -47,6 +47,6 @@ test("Ships being hit in the same spot", () => {
     submarine.hit(1);
     submarine.hit(1);
     submarine.hit(1);
-    expect(battleship.hits.size).toBe(1);
-    expect(submarine.hits.size).toBe(1);
+    expect(battleship.hits.length).toBe(1);
+    expect(submarine.hits.length).toBe(1);
 });
