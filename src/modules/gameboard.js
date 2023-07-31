@@ -50,4 +50,16 @@ export default class Gameboard {
       this.board[position[0]][position[1]].hit(position);
     }
   }
+
+  allShipsSunk() {
+    let check = true;
+
+    this.ships.forEach((ship) => {
+      if (!ship.isSunk()) {
+        check = false;
+      }
+    });
+
+    return check;
+  }
 }
