@@ -87,6 +87,23 @@ export default function playGame() {
   addPlayerShips(player);
 
   player.board.printBoard();
+  computer.board.printBoard();
+
+  computerTiles.forEach((tile, index) => {
+    tile.addEventListener("click", () => {
+      if (
+        !tile.classList.contains("miss") &&
+        !tile.classList.contains("hit")
+      ) {
+        const position = [index % 10, Math.floor(index / 10)];
+        player.attackPlayer(computer, position);
+        DOM.markPlayerAttack(computerTiles, position, computer);
+        computer.randomAttack(player);
+        const attack = getAttack(player);
+        DOM.markAttack(playerTiles, attack);
+      }
+    });
+  });
 
   //   while (!player.board.allShipsSunk() && !computer.board.allShipsSunk()) {
   //     if (player.board.allShipsSunk() && !computer.board.allShipsSunk()) {
