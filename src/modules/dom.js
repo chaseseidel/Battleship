@@ -168,6 +168,18 @@ export default class DOM {
     }
   }
 
+  static markPlayerAttack(tiles, position, opponent) {
+    const tilePosition = position[1] * 10 + position[0];
+
+    if (typeof opponent.board.board[position[0]][position[1]] === "object") {
+      tiles[tilePosition].className = "tile hit";
+    } else {
+      if (!tiles[tilePosition].classList.contains("miss")) {
+        tiles[tilePosition].classList.add("miss");
+      }
+    }
+  }
+
   static playerPlacesShip(tiles, length, direction, shipLengths, ships) {
     tiles.forEach((tile, index) => {
       tile.addEventListener("click", () => {
