@@ -180,9 +180,28 @@ export default class DOM {
     });
   }
 
+  static updateBoard() {
+    const boards = document.querySelectorAll(".board");
+    const playerBoard = boards[0];
+    const boardToCopy = boards[2];
+
+    const playerTiles = playerBoard.querySelectorAll(".tile");
+    const tilesToCopy = boardToCopy.querySelectorAll(".tile");
+
+    playerTiles.forEach((tile, index) => {
+      tile.className = tilesToCopy[index].className;
+    });
+  }
+
   static removeEventListeners(tiles) {
     tiles.forEach((tile) => {
       tile.parentNode.replaceChild(tile.cloneNode(true), tile);
     });
+  }
+
+  static toggleModal() {
+    const modal = document.querySelector(".place-ships-modal");
+
+    modal.classList.toggle("active");
   }
 }
