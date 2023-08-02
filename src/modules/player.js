@@ -33,7 +33,6 @@ export default class Player {
     let y = Math.floor(Math.random() * 10);
     try {
       player.board.receiveAttack([x, y]);
-      return [x, y];
     } catch (e) {
       this.randomAttack(player);
     }
