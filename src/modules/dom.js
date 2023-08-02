@@ -5,6 +5,7 @@ export default class DOM {
     DOM.createGameBoards();
     DOM.createFooter();
     DOM.createModal();
+    DOM.createFakeModal();
   }
 
   static createTitle() {
@@ -81,6 +82,52 @@ export default class DOM {
 
     rotate.classList.add("button");
     rotate.setAttribute("id", "rotate");
+    rotate.textContent = "Rotate";
+
+    start.classList.add("button");
+    start.setAttribute("id", "start-game");
+    start.textContent = "Start Game";
+
+    content.appendChild(text);
+    content.appendChild(board);
+    content.appendChild(rotate);
+    content.appendChild(start);
+
+    modal.appendChild(overlay);
+    modal.appendChild(content);
+
+    container.appendChild(modal);
+  }
+
+  static createFakeModal() {
+    const container = document.getElementById("container");
+
+    const modal = document.createElement("div");
+    modal.className = "place-ships-modal-fake active";
+
+    const overlay = document.createElement("div");
+    const content = document.createElement("div");
+    const text = document.createElement("div");
+    const board = document.createElement("div");
+    const rotate = document.createElement("button");
+    const start = document.createElement("button");
+
+    overlay.classList.add("overlay");
+    content.classList.add("place-ships-board");
+
+    text.setAttribute("id", "modal-text");
+    text.textContent = "Place your ships";
+
+    board.classList.add("board");
+
+    for (let i = 0; i < 100; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      board.appendChild(tile);
+    }
+
+    rotate.classList.add("button");
+    rotate.setAttribute("id", "fake-rotate");
     rotate.textContent = "Rotate";
 
     start.classList.add("button");
@@ -180,6 +227,79 @@ export default class DOM {
     });
   }
 
+  static addInteractiveBoard(tiles, length, direction) {
+    tiles.forEach((tile, index) => {
+      tile.addEventListener("mouseenter", () => {
+        let interfere = false;
+        if (direction === "x") {
+          for (let i = 0; i < length; i++) {
+            if ((index % 10) + length > 10) {
+              interfere = true;
+              break;
+            }
+            if (
+              tiles[index + i].classList.contains("ship") ||
+              tiles[index + i].classList.contains("fake-ship")
+            ) {
+              interfere = true;
+              break;
+            }
+          }
+          if (!interfere) {
+            for (let i = 0; i < length; i++) {
+              tiles[index + i].classList.toggle("ship");
+            }
+          } else {
+            tile.classList.toggle("miss");
+          }
+        } else if (direction === "y") {
+          for (let i = 0; i < length; i++) {
+            if (Math.floor(index / 10) + length > 10) {
+              interfere = true;
+              break;
+            }
+            if (
+              tiles[index + 10 * i].classList.contains("ship") ||
+              tiles[index + 10 * i].classList.contains("fake-ship")
+            ) {
+              interfere = true;
+              break;
+            }
+          }
+          if (!interfere) {
+            for (let i = 0; i < length; i++) {
+              tiles[index + 10 * i].classList.toggle("ship");
+            }
+          } else {
+            tile.classList.toggle("miss");
+          }
+        }
+      });
+
+      tile.addEventListener("mouseleave", () => {
+        if (direction === "x") {
+          if (tile.classList.contains("ship")) {
+            for (let i = 0; i < length; i++) {
+              tiles[index + i].classList.toggle("ship");
+            }
+          }
+          if (tile.classList.contains("miss")) {
+            tile.classList.toggle("miss");
+          }
+        } else if (direction === "y") {
+          if (tile.classList.contains("ship")) {
+            for (let i = 0; i < length; i++) {
+              tiles[index + 10 * i].classList.toggle("ship");
+            }
+          }
+          if (tile.classList.contains("miss")) {
+            tile.classList.toggle("miss");
+          }
+        }
+      });
+    });
+  }
+
   static updateBoard() {
     const boards = document.querySelectorAll(".board");
     const playerBoard = boards[0];
@@ -201,6 +321,12 @@ export default class DOM {
 
   static toggleModal() {
     const modal = document.querySelector(".place-ships-modal");
+
+    modal.classList.toggle("active");
+  }
+
+  static toggleFakeModal() {
+    const modal = document.querySelector(".place-ships-modal-fake");
 
     modal.classList.toggle("active");
   }
