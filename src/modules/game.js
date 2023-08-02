@@ -84,9 +84,7 @@ export default function playGame() {
   const computerTiles = computerBoard.querySelectorAll(".tile");
 
   computer.randomFleet();
-  playerShips.forEach((ship) => {
-    player.board.placeShip(new Ship(ship[0]), ship[1], ship[2]);
-  });
+  addPlayerShips(player);
 
   player.board.printBoard();
 
@@ -134,16 +132,39 @@ export default function playGame() {
 }
 
 export function preGame() {
-  const boards = document.querySelectorAll(".board");
-  const playerBoard = boards[0];
-  const computerBoard = boards[1];
+  const modal = document.querySelector(".place-ships-modal");
+  const fakeModal = document.querySelector(".place-ships-modal-fake");
+  const playerBoard = modal.querySelector(".board");
+  const fakePlayerBoard = fakeModal.querySelector(".board");
   let playerTiles = playerBoard.querySelectorAll(".tile");
-  const computerTiles = computerBoard.querySelectorAll(".tile");
+  let fakePlayerTiles = fakePlayerBoard.querySelectorAll(".tile");
 
-  DOM.playerPlacesShip(playerTiles, 2, direction, shipLengths, playerShips);
-  playerBoard.addEventListener("click", () => {
+  const fakeRotate = document.getElementById("fake-rotate");
+  fakeRotate.addEventListener("click", () => {
+    if (direction === "x") {
+      direction = "y";
+    } else {
+      direction = "x";
+    }
+
     DOM.removeEventListeners(playerTiles);
+    DOM.removeEventListeners(fakePlayerTiles);
     playerTiles = playerBoard.querySelectorAll(".tile");
+    fakePlayerTiles = fakePlayerBoard.querySelectorAll(".tile");
+    fakePlayerTiles.forEach((tile, index) => {
+      if (playerTiles[index].classList.contains("ship")) {
+        tile.className = "tile fake-ship";
+      }
+    });
+    fakePlayerTiles.forEach((tile, index) => {
+      tile.addEventListener("click", () => {
+        if (!tile.classList.contains("miss")) {
+          playerBoard.click();
+          playerTiles[index].click();
+          DOM.toggleFakeModal();
+        }
+      });
+    });
     DOM.playerPlacesShip(
       playerTiles,
       shipLengths[0],
@@ -151,11 +172,62 @@ export function preGame() {
       shipLengths,
       playerShips
     );
+    playerTiles.forEach((tile) => {
+      tile.addEventListener("click", () => DOM.toggleFakeModal());
+    });
+    DOM.addInteractiveBoard(fakePlayerTiles, shipLengths[0], direction);
   });
 
-  const title = document.getElementById("title");
-  title.addEventListener("click", () => {
-    playGame();
+  DOM.addInteractiveBoard(fakePlayerTiles, shipLengths[0], direction);
+  fakePlayerTiles.forEach((tile, index) => {
+    tile.addEventListener("click", () => {
+      if (!tile.classList.contains("miss")) {
+        playerBoard.click();
+        playerTiles[index].click();
+        DOM.toggleFakeModal();
+      }
+    });
+  });
+
+  playerBoard.addEventListener("click", () => {
+    DOM.removeEventListeners(playerTiles);
+    DOM.removeEventListeners(fakePlayerTiles);
+    playerTiles = playerBoard.querySelectorAll(".tile");
+    fakePlayerTiles = fakePlayerBoard.querySelectorAll(".tile");
+    fakePlayerTiles.forEach((tile, index) => {
+      if (playerTiles[index].classList.contains("ship")) {
+        tile.className = "tile fake-ship";
+      }
+    });
+    fakePlayerTiles.forEach((tile, index) => {
+      tile.addEventListener("click", () => {
+        if (!tile.classList.contains("miss")) {
+          playerBoard.click();
+          playerTiles[index].click();
+          DOM.toggleFakeModal();
+        }
+      });
+    });
+    DOM.playerPlacesShip(
+      playerTiles,
+      shipLengths[0],
+      direction,
+      shipLengths,
+      playerShips
+    );
+    playerTiles.forEach((tile) => {
+      tile.addEventListener("click", () => DOM.toggleFakeModal());
+    });
+    DOM.addInteractiveBoard(fakePlayerTiles, shipLengths[0], direction);
+    if (shipLengths.length < 1) {
+      DOM.toggleFakeModal();
+      const start = document.getElementById("start-game");
+      start.addEventListener("click", () => {
+        playGame();
+        DOM.updateBoard();
+        DOM.toggleModal();
+      });
+    }
   });
 }
 
@@ -163,4 +235,10 @@ function getAttack(player) {
   const x = Number(player.board.mostRecentHit()[1]);
   const y = Number(player.board.mostRecentHit()[3]);
   return [x, y];
+}
+
+function addPlayerShips(player) {
+  playerShips.forEach((ship) => {
+    player.board.placeShip(new Ship(ship[0]), ship[1], ship[2]);
+  });
 }
