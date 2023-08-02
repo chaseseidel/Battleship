@@ -5,6 +5,9 @@
   --white-color: #fbfbff;
   --gray-color: #b1b1b1;
   --black-color: black;
+  --ship-color: green;
+  --missed-color: red;
+  --hit-color: lightblue;
 }
 
 html {
@@ -63,6 +66,22 @@ body {
   background-color: var(--gray-color);
 }
 
+.tile.ship {
+  background-color: var(--ship-color);
+}
+
+.tile.fake-ship {
+  background-color: var(--ship-color);
+}
+
+.tile.miss {
+  background-color: var(--missed-color);
+}
+
+.tile.hit {
+  background-color: var(--hit-color);
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -70,4 +89,70 @@ footer {
   padding: 10px;
   text-align: center;
   background-color: #e7e7e7;
+}
+
+.place-ships-modal .overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  backdrop-filter: blur(4px);
+  display: none;
+}
+
+.place-ships-modal .place-ships-board,
+.place-ships-modal-fake .place-ships-board {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  height: 75%;
+  width: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background-color: var(--white-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6px;
+  padding: 25px 50px;
+}
+
+.place-ships-modal .board,
+.place-ships-modal-fake .board {
+  width: 100%;
+  margin: 25px 0;
+}
+
+.place-ships-modal.active .overlay {
+  display: flex;
+}
+
+.place-ships-modal.active .place-ships-board,
+.place-ships-modal-fake.active .place-ships-board {
+  transition: all 200ms ease-in-out;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.place-ships-modal-fake .place-ships-board {
+  z-index: 3;
+}
+
+#modal-text {
+  font-size: 2rem;
+}
+
+.button {
+  height: 50px;
+  width: 25%;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  border: 2px solid var(--gray-color);
+  border-radius: 6px;
+}
+
+.button:hover {
+  background-color: var(--gray-color);
 }
