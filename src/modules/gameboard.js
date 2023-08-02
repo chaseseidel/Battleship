@@ -17,7 +17,7 @@ export default class Gameboard {
 
   placeShip(ship, position, direction) {
     if (direction === "x") {
-      if (position[0] + ship.length > 9) {
+      if (position[0] + ship.length > 10) {
         throw new Error("Ship cannot be placed there");
       }
 
@@ -29,7 +29,7 @@ export default class Gameboard {
       }
       this.ships.push(ship);
     } else {
-      if (position[1] + ship.length > 9) {
+      if (position[1] + ship.length > 10) {
         throw new Error("Ship cannot be placed there");
       }
 
