@@ -4,6 +4,7 @@ export default class DOM {
     DOM.createGameContainer();
     DOM.createGameBoards();
     DOM.createFooter();
+    DOM.createModal();
   }
 
   static createTitle() {
@@ -49,6 +50,52 @@ export default class DOM {
 
       gameContainer.appendChild(board);
     }
+  }
+
+  static createModal() {
+    const container = document.getElementById("container");
+
+    const modal = document.createElement("div");
+    modal.className = "place-ships-modal active";
+
+    const overlay = document.createElement("div");
+    const content = document.createElement("div");
+    const text = document.createElement("div");
+    const board = document.createElement("div");
+    const rotate = document.createElement("button");
+    const start = document.createElement("button");
+
+    overlay.classList.add("overlay");
+    content.classList.add("place-ships-board");
+
+    text.setAttribute("id", "modal-text");
+    text.textContent = "Place your ships";
+
+    board.classList.add("board");
+
+    for (let i = 0; i < 100; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      board.appendChild(tile);
+    }
+
+    rotate.classList.add("button");
+    rotate.setAttribute("id", "rotate");
+    rotate.textContent = "Rotate";
+
+    start.classList.add("button");
+    start.setAttribute("id", "start-game");
+    start.textContent = "Start Game";
+
+    content.appendChild(text);
+    content.appendChild(board);
+    content.appendChild(rotate);
+    content.appendChild(start);
+
+    modal.appendChild(overlay);
+    modal.appendChild(content);
+
+    container.appendChild(modal);
   }
 
   static placeShip(tiles, length, position, direction) {
