@@ -26,9 +26,6 @@ export default function playGame() {
   computer.randomFleet();
   addPlayerShips(player);
 
-  player.board.printBoard();
-  computer.board.printBoard();
-
   computerTiles.forEach((tile, index) => {
     tile.addEventListener("click", () => {
       if (!tile.classList.contains("miss") && !tile.classList.contains("hit")) {
