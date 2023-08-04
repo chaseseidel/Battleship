@@ -6,6 +6,7 @@ export default class DOM {
     DOM.createFooter();
     DOM.createModal();
     DOM.createFakeModal();
+    DOM.createGameOverModal();
   }
 
   static createTitle() {
@@ -22,7 +23,7 @@ export default class DOM {
     const container = document.getElementById("container");
 
     const footer = document.createElement("footer");
-    footer.textContent = "Copyright Chase";
+    footer.textContent = "Copyright © 2023 chaseseidel";
 
     container.appendChild(footer);
   }
@@ -64,7 +65,6 @@ export default class DOM {
     const text = document.createElement("div");
     const board = document.createElement("div");
     const rotate = document.createElement("button");
-    const start = document.createElement("button");
 
     overlay.classList.add("overlay");
     content.classList.add("place-ships-board");
@@ -84,14 +84,9 @@ export default class DOM {
     rotate.setAttribute("id", "rotate");
     rotate.textContent = "Rotate";
 
-    start.classList.add("button");
-    start.setAttribute("id", "start-game");
-    start.textContent = "Start Game";
-
     content.appendChild(text);
     content.appendChild(board);
     content.appendChild(rotate);
-    content.appendChild(start);
 
     modal.appendChild(overlay);
     modal.appendChild(content);
@@ -105,14 +100,11 @@ export default class DOM {
     const modal = document.createElement("div");
     modal.className = "place-ships-modal-fake active";
 
-    const overlay = document.createElement("div");
     const content = document.createElement("div");
     const text = document.createElement("div");
     const board = document.createElement("div");
     const rotate = document.createElement("button");
-    const start = document.createElement("button");
 
-    overlay.classList.add("overlay");
     content.classList.add("place-ships-board");
 
     text.setAttribute("id", "modal-text");
@@ -130,14 +122,43 @@ export default class DOM {
     rotate.setAttribute("id", "fake-rotate");
     rotate.textContent = "Rotate";
 
-    start.classList.add("button");
-    start.setAttribute("id", "start-game");
-    start.textContent = "Start Game";
-
     content.appendChild(text);
     content.appendChild(board);
     content.appendChild(rotate);
-    content.appendChild(start);
+
+    modal.appendChild(content);
+
+    container.appendChild(modal);
+  }
+
+  static createGameOverModal() {
+    const container = document.getElementById("container");
+
+    const modal = document.createElement("div");
+    modal.className = "game-over-modal";
+
+    const overlay = document.createElement("div");
+    const content = document.createElement("div");
+    const text = document.createElement("div");
+    const winnerText = document.createElement("div");
+    const resetButton = document.createElement("button");
+
+    overlay.classList.add("overlay");
+    content.classList.add("game-over-content");
+
+    text.setAttribute("id", "game-over-modal-text");
+    text.textContent = "Game Over";
+
+    winnerText.setAttribute("id", "winner-text");
+    winnerText.textContent = "You won the game!";
+
+    resetButton.classList.add("button");
+    resetButton.setAttribute("id", "reset");
+    resetButton.textContent = "Reset Game";
+
+    content.appendChild(text);
+    content.appendChild(winnerText);
+    content.appendChild(resetButton);
 
     modal.appendChild(overlay);
     modal.appendChild(content);
@@ -341,5 +362,18 @@ export default class DOM {
     const modal = document.querySelector(".place-ships-modal-fake");
 
     modal.classList.toggle("active");
+  }
+
+  static toggleGameOverModal() {
+    const modal = document.querySelector(".game-over-modal");
+
+    modal.classList.toggle("active");
+  }
+
+  static resetPage() {
+    const container = document.getElementById("container");
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
   }
 }
